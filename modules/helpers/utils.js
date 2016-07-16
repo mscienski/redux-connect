@@ -90,14 +90,8 @@ export function loadAsyncConnect({ components, filter = () => true, ...rest }) {
 
     // get array of results
     const results = asyncItems.reduce((itemsResults, item) => {
-<<<<<<< HEAD
-      // initiate the promise with or without blocking
       let promiseOrResult = item.promise(rest);
 
-=======
-      let promiseOrResult = item.promise(rest);
-      
->>>>>>> c0057c0... invoke promises in all cases, but sometimes without blocking
       if (filter(item, component)) {
         if (isPromise(promiseOrResult)) {
           promiseOrResult = promiseOrResult.catch(error => ({ error }));
