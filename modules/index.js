@@ -8,5 +8,5 @@ export {
     LOAD_FAIL,
     CLEAR,
     BEGIN_GLOBAL_LOAD,
-    END_GLOBAL_LOAD
+    END_GLOBAL_LOAD,
 } from './store';
