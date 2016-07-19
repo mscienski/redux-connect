@@ -35,7 +35,7 @@ export const reducer = handleActions({
     },
   }),
 
-  [LOAD_SUCCESS]: (state, { payload: { key, data } }) => ({
+  [LOAD_SUCCESS]: (state, { payload: { key } }) => ({
     ...state,
     loadState: {
       ...state.loadState,
@@ -45,7 +45,6 @@ export const reducer = handleActions({
         error: null,
       },
     },
-    [key]: data,
   }),
 
   [LOAD_FAIL]: (state, { payload: { key, error } }) => ({
@@ -70,7 +69,6 @@ export const reducer = handleActions({
         error: null,
       },
     },
-    [payload]: null,
   }),
 
 }, initialState);
@@ -85,9 +83,8 @@ export const load = createAction(LOAD, (key) => ({
   key,
 }));
 
-export const loadSuccess = createAction(LOAD_SUCCESS, (key, data) => ({
+export const loadSuccess = createAction(LOAD_SUCCESS, (key) => ({
   key,
-  data,
 }));
 
 export const loadFail = createAction(LOAD_FAIL, (key, error) => ({

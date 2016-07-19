@@ -75,11 +75,8 @@ describe('<ReduxAsyncConnect />', function suite() {
             </Provider>
           );
 
-          expect(html.text()).toContain('sandwich');
           state = store.getState();
           expect(state.reduxAsyncConnect.loaded).toBe(true);
-          expect(state.reduxAsyncConnect.lunch).toBe('sandwich');
-          expect(state.reduxAsyncConnect.action).toBe('yammi');
           expect(state.reduxAsyncConnect.loadState.lunch.loading).toBe(false);
           expect(state.reduxAsyncConnect.loadState.lunch.loaded).toBe(true);
           expect(state.reduxAsyncConnect.loadState.lunch.error).toBe(null);
@@ -120,7 +117,6 @@ describe('<ReduxAsyncConnect />', function suite() {
     expect(eat.called).toBe(false);
 
     expect(wrapper.find(App).length).toBe(1);
-    expect(wrapper.find(App).prop('lunch')).toBe('sandwich');
 
     // global loader spy
     expect(endGlobalLoadSpy.called).toBe(false);
@@ -195,7 +191,6 @@ describe('<ReduxAsyncConnect />', function suite() {
       endGlobalLoadSpy.reset();
 
       expect(wrapper.find(App).length).toBe(1);
-      expect(wrapper.find(App).prop('lunch')).toBe('sandwich');
       expect(wrapper.find(App).prop('externalState')).toBe('supported');
       expect(wrapper.find(App).prop('remappedProp')).toBe('on');
 
