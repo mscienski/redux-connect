@@ -56,7 +56,25 @@ export default class AsyncConnect extends Component {
   }
 
   isLoaded() {
-    return this.context.store.getState().reduxAsyncConnect.loaded;
+    const componentKeys = this.props.components.reduce((componentsMemo, component) => {
+      if (component && component.reduxAsyncConnect && component.reduxAsyncConnect.length) {
+        component.reduxAsyncConnect.forEach(asyncConnectComponent => {
+          if (asyncConnectComponent.key) {
+            componentsMemo.push(asyncConnectComponent.key);
+          }
+        });
+      }
+
+      return componentsMemo;
+    }, []);
+
+    const loadState = this.context.store.getState().reduxAsyncConnect.loadState;
+    const reduxAsyncConnectComponentsLoaded = componentKeys.reduce((loadedMemo, key) =>
+      (loadState[key] ? (loadedMemo && loadState[key].loaded) : false)
+    , true);
+
+    return this.context.store.getState().reduxAsyncConnect.loaded &&
+      reduxAsyncConnectComponentsLoaded;
   }
 
   loadAsyncData(props) {
