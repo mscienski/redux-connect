@@ -70,9 +70,9 @@ export default class AsyncConnect extends Component {
     }, []);
 
     const loadState = this.context.store.getState().reduxAsyncConnect.loadState;
-    const reduxAsyncConnectComponentsLoaded = componentKeys.reduce((loadedMemo, key) =>
-      (loadState[key] ? (loadedMemo && loadState[key].loaded) : false)
-    , true);
+    const reduxAsyncConnectComponentsLoaded = componentKeys.reduce((loadedMemo, key) => (
+      loadState[key] ? (loadedMemo && loadState[key].loaded) : false
+    ), true);
 
     return this.context.store.getState().reduxAsyncConnect.loaded &&
       reduxAsyncConnectComponentsLoaded;
