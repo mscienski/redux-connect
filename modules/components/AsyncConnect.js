@@ -5,6 +5,7 @@ import { loadAsyncConnect } from '../helpers/utils';
 export default class AsyncConnect extends Component {
   static propTypes = {
     components: PropTypes.array.isRequired,
+    filter: PropTypes.func,
     params: PropTypes.object.isRequired,
     render: PropTypes.func.isRequired,
     beginGlobalLoad: PropTypes.func.isRequired,
@@ -26,7 +27,7 @@ export default class AsyncConnect extends Component {
     super(props, context);
 
     this.state = {
-      propsToShow: this.isLoaded() ? props : null,
+      propsToShow: this.isLoaded(props.filter) ? props : null,
     };
 
     this.mounted = false;
@@ -55,17 +56,17 @@ export default class AsyncConnect extends Component {
     this.mounted = false;
   }
 
-  isLoaded() {
-    const componentKeys = this.props.components.reduce((componentsMemo, component) => {
+  isLoaded(filter = () => true) {
+    const componentKeys = this.props.components.reduce((componentKeysMemo, component) => {
       if (component && component.reduxAsyncConnect && component.reduxAsyncConnect.length) {
-        component.reduxAsyncConnect.forEach(asyncConnectComponent => {
-          if (asyncConnectComponent.key) {
-            componentsMemo.push(asyncConnectComponent.key);
-          }
-        });
+        const asyncConnectComponentKeys = component.reduxAsyncConnect
+          .filter(asyncConnectComponent => !!asyncConnectComponent.key && filter(asyncConnectComponent, component)) // eslint-disable-line max-len
+          .map(asyncConnectComponent => asyncConnectComponent.key);
+
+        return [...componentKeysMemo, ...asyncConnectComponentKeys];
       }
 
-      return componentsMemo;
+      return componentKeysMemo;
     }, []);
 
     const loadState = this.context.store.getState().reduxAsyncConnect.loadState;
